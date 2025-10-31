@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 
 def replace_in_file(filename, placeholder, value):
@@ -16,6 +17,10 @@ def main():
     replace_in_file("CMakeLists.txt", "{{PROJECT_NAME}}", project_name)
     replace_in_file("src/Utils.cpp", "{{PROJECT_NAME}}", project_name)
     replace_in_file("src/Renderer.cpp", "{{PROJECT_NAME}}", project_name)
+
+    os.rename("resources/project.desktop.in", f'resources/{project_name}.desktop.in')
+    os.rename("resources/project.png", f'resources/{project_name}.png')
+    os.rename("resources/project.rc.in", f'resources/{project_name}.rc.in')
 
     print(f"Project configured as '{project_name}'")
 
