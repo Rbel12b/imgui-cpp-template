@@ -17,6 +17,7 @@ def main():
     replace_in_file("CMakeLists.txt", "{{PROJECT_NAME}}", project_name)
     replace_in_file("src/Utils.cpp", "{{PROJECT_NAME}}", project_name)
     replace_in_file("src/Renderer.cpp", "{{PROJECT_NAME}}", project_name)
+    replace_in_file("README.md", "{{PROJECT_NAME}}", project_name)
 
     os.rename("resources/project.desktop.in", f'resources/{project_name}.desktop.in')
     os.rename("resources/project.png", f'resources/{project_name}.png')
