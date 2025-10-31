@@ -4,25 +4,21 @@ A c++ project with imgui and cmake.
 
 ## Setup
 
-run
+Run the folowing to set the project name.
 
 ```bash
 ./init_name.py
 ```
 
-to set the project name, after this running it again will not do anything. You can roll back with git:
+After this running it again will not do anything.
 
-```bash
-git checkout *
-```
-
-for debugging, run the `setup.sh` to link the required files into the build directory (for creating bundles this isn't needed).
+For debugging, run the `setup.sh` to link the required files into the build directory (for creating bundles this isn't needed).
 
 ## Building
 
 ### Linux
 
-building just the executable (for debugging):
+Building just the executable (for debugging):
 
 ```bash
 ./setup.sh # only needed once
@@ -30,7 +26,7 @@ cmake -B ./build .
 cmake build ./build
 ```
 
-building the appimage:
+Building the appimage:
 
 ```bash
 ./build-appimage.sh
