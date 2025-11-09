@@ -41,7 +41,20 @@ jobs:
         run: |
           cmake --version
           xxd --version || echo "xxd from vim-common"
-          magick --version
+          # Handle both ImageMagick v7 (`magick`) and v6 (`convert`)
+          if command -v magick >/dev/null 2>&1; then
+            echo "ImageMagick version:"
+            magick -version
+          elif command -v convert >/dev/null 2>&1; then
+            echo "Using legacy ImageMagick binary:"
+            convert -version
+            # create a shim so 'magick' works too
+            sudo ln -s $(command -v convert) /usr/local/bin/magick
+          else
+            echo "ImageMagick not found — installing now"
+            sudo apt-get update
+            sudo apt-get install -y imagemagick
+          fi
           x86_64-w64-mingw32-g++ --version
 
       - name: Generate changelog / release notes
