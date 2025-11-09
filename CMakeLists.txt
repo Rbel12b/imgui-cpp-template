@@ -34,7 +34,7 @@ set(WINDOWS_ICON_RESOURCE_OUT "${CMAKE_BINARY_DIR}/${APP_NAME}.rc")
 set(DEFAULT_FONT "${CMAKE_SOURCE_DIR}/resources/NotoSans-Regular.ttf")
 
 # --- Find dependencies ---
-file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp thirdparty/lib/imgui_additions.cpp)
 
 # --- Add to target executable ---
 if(WIN32)
