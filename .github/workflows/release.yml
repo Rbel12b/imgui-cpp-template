@@ -55,7 +55,6 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y imagemagick
           fi
-          x86_64-w64-mingw32-g++ --version
 
       - name: Generate changelog / release notes
         id: notes
