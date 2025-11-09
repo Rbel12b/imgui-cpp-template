@@ -37,6 +37,9 @@ jobs:
             libcurl4-openssl-dev curl \
             imagemagick zip file
 
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v2
+
       - name: Verify tools
         run: |
           cmake --version
