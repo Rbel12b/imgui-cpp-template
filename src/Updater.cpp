@@ -20,7 +20,7 @@ bool Updater::checkUpdate(AppState& state)
 
     std::cout << "latest version: " << versionStr << ", current version: " << state.version->m_version << "\n"; 
 
-    if (versionStr == "Not Found")
+    if (versionStr == "Not Found" || versionStr == "Not")
     {
         return false;
     }
