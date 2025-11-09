@@ -92,8 +92,7 @@ jobs:
           mkdir -p release
           cp .version "release/${PROJECT_NAME}.version"
           cp ${PROJECT_NAME}-x86_64.AppImage "release/${PROJECT_NAME}.AppImage"
-          WIN_EXE=$(ls ${PROJECT_NAME}-*-win64.exe | head -n 1)
-          cp "$WIN_EXE" "release/${PROJECT_NAME}-installer.exe"
+          cp build-linux/${PROJECT_NAME} release/${PROJECT_NAME}
           ls -lh release/
 
       - name: Create GitHub Release
