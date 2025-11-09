@@ -14,10 +14,22 @@ App::App()
     std::string versionStr(reinterpret_cast<const char *>(____version),
                            static_cast<size_t>(____version_len));
     state.version = new Version(versionStr);
+    state.updater = new Updater();
 }
 
 App::~App()
 {
+    if (state.version)
+    {
+        delete state.version;
+        state.version = nullptr;
+    }
+
+    if (state.updater)
+    {
+        delete state.updater;
+        state.updater = nullptr;
+    }
 }
 
 void App::init()
@@ -63,15 +75,60 @@ int App::run(int argc, char **argv, std::filesystem::path logFile)
     if (renderer.startRenderLoop(&state) != 0)
         return -1; // Failed to start render loop
 
+    if (state.updater && state.updater->checkUpdate(state))
+    {
+        state.newVersionPopup = true;
+    }
+
     while (renderer.isRunning())
     {
         if (state.progamShouldExit)
             break;
+
+        if (state.downloadUpdate)
+        {
+            state.downloadUpdate = false;
+            state.commandInProgress.progress = 0;
+            state.commandInProgress.progressDisabled = false;
+            state.commandInProgress.text = "Downloading update...";
+            state.commandInProgress.enabled = true;
+            if (state.updater && !state.updater->downloadUpdate(state))
+            {
+                state.readyForUpdate = true;
+                state.progamShouldExit = true;
+            }
+            else
+            {
+                state.showFile.errorLog = true;
+                state.showFile.enabled = true;
+            }
+            state.commandInProgress.enabled = false;
+            state.commandInProgress.progress = -1;
+        }
+
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         std::cout.flush();
     }
 
     renderer.join();
+
+    if (state.readyForUpdate)
+    {
+        std::cout << "updating...\n";
+        state.updater->update(state);
+    }
+
+    if (state.version)
+    {
+        delete state.version;
+        state.version = nullptr;
+    }
+
+    if (state.updater)
+    {
+        delete state.updater;
+        state.updater = nullptr;
+    }
 
     return 0;
 }

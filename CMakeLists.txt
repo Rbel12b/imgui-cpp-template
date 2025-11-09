@@ -65,10 +65,13 @@ set(DearImGui_Backend_SDLRenderer2 ON)
 set(DearImGui_Backend_SDL2 ON)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/lib/CMakeForImGui EXCLUDE_FROM_ALL)
+add_subdirectory(thirdparty/lib/cpplib)
 
 find_package(SDL2 CONFIG REQUIRED)
 
-target_link_libraries(${APP_EXECUTABLE} imgui_core imgui_impl_sdl2 imgui_impl_sdlrenderer2 SDL2::SDL2)
+target_link_libraries(${APP_EXECUTABLE} imgui_core imgui_impl_sdl2 imgui_impl_sdlrenderer2 SDL2::SDL2 Rbel12b-cpplib::ProcessUtils)
+
+target_include_directories(${APP_EXECUTABLE} thirdparty/lib/imgui_additions)
 
 # --- Custom commands: generate icons ---
 

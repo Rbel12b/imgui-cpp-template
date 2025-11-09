@@ -1,8 +1,12 @@
 #pragma once
+
+class Version;
+class Updater;
+
 #include <string>
 #include <vector>
-#include <cstdint>
 #include <sstream>
+#include "AppState.hpp"
 
 class Version
 {
@@ -73,4 +77,14 @@ public:
     }
 
     std::string m_version;
+};
+
+class Updater
+{
+public:
+    bool checkUpdate(AppState& state);
+    bool downloadUpdate(AppState& state);
+    void update(AppState& state);
+
+    bool updateAvailable = false;
 };

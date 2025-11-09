@@ -207,4 +207,12 @@ namespace Utils
 #endif
     }
 
+    bool loadFileToString(const std::string &path, std::string &out)
+    {
+        std::ifstream ifs(path, std::ios::in | std::ios::binary);
+        if (!ifs)
+            return false;
+        out.assign((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+        return true;
+    }
 } // namespace Utils

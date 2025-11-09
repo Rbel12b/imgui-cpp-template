@@ -39,6 +39,8 @@ namespace Utils
     std::filesystem::path getUserDataDir();
 
     std::filesystem::path getTempDir();
+
+    bool loadFileToString(const std::string &path, std::string &out);
 }
 
 #endif // UTILS_HPP

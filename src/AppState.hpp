@@ -12,7 +12,7 @@ class AppState;
 #include <atomic>
 #include <cstdint>
 #include "Renderer.hpp"
-#include "Version.hpp"
+#include "Updater.hpp"
 
 class AppState
 {
@@ -22,6 +22,27 @@ public:
     ImVec2 mainWindowSize = ImVec2(0, 0);
     std::filesystem::path logFile;
     Version* version = nullptr;
+    bool readyForUpdate = false;
+    std::string repoUrl = "https://github.com/Rbel12b/imgui-cpp-template";
+    Updater *updater;
+    bool newVersionPopup = false;
+    bool downloadUpdate = false;
+
+    struct
+    {
+        bool enabled = false;
+        std::string text = "";
+        int progress = -1;
+        bool progressDisabled = true;
+    } commandInProgress;
+    
+    struct
+    {
+        bool enabled = false;
+        std::filesystem::path filePath;
+        std::string msg;
+        bool errorLog = false;
+    } showFile;
 };
 
 #endif // APP_STATE_H
