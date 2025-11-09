@@ -33,14 +33,23 @@ namespace Utils
     std::filesystem::path getExecutableDir();
     std::filesystem::path getExecutable();
 
-    // Returns a user-writable directory for app data
-    // Windows -> %LOCALAPPDATA%\project-name
-    // Linux   -> $HOME/.config/project-name
+    /**
+     * Returns a user-writable directory for app data
+     * Windows -> %LOCALAPPDATA%\project-name
+     * Linux   -> $HOME/.config/project-name
+     */
     std::filesystem::path getUserDataDir();
 
     std::filesystem::path getTempDir();
 
     bool loadFileToString(const std::string &path, std::string &out);
+
+    /**
+     * file download using curl
+     * @param url remote file URL
+     * @param dest local path to save the file
+     */
+    bool downloadFile(const std::string &url, const std::filesystem::path &dest, AppState& state);
 }
 
 #endif // UTILS_HPP

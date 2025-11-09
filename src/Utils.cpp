@@ -215,4 +215,64 @@ namespace Utils
         out.assign((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         return true;
     }
+
+    static size_t writeFileCallback(void *ptr, size_t size, size_t nmemb, void *stream)
+    {
+        std::ofstream *ofs = static_cast<std::ofstream *>(stream);
+        ofs->write(static_cast<char *>(ptr), size * nmemb);
+        return size * nmemb;
+    }
+
+    static int progressCallback(void *clientp,
+                                curl_off_t dltotal, curl_off_t dlnow,
+                                curl_off_t ultotal, curl_off_t ulnow)
+    {
+        AppState *state = static_cast<AppState *>(clientp);
+
+        if (dltotal > 0)
+        {
+            int percent = static_cast<int>((dlnow * 100) / dltotal);
+            state->commandInProgress.progress = percent;
+        }
+        else
+        {
+            state->commandInProgress.progress = 0;
+        }
+        return 0; // return non-zero to abort
+    }
+
+    bool downloadFile(const std::string &url, const std::filesystem::path &dest, AppState &state)
+    {
+        CURL *curl = curl_easy_init();
+        if (!curl)
+            return false;
+
+        std::ofstream ofs(dest, std::ios::binary);
+        if (!ofs)
+        {
+            curl_easy_cleanup(curl);
+            std::cerr << "Failed to open file for write: " << dest << "\n";
+            return false;
+        }
+
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, "curl/7.81.0");
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFileCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &ofs);
+
+        // Progress callback
+        curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, progressCallback);
+        curl_easy_setopt(curl, CURLOPT_XFERINFODATA, &state);
+        curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
+
+        CURLcode res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+        ofs.close();
+
+        if (res != CURLE_OK)
+            std::cerr << "Download failed: " << curl_easy_strerror(res) << std::endl;
+
+        return res == CURLE_OK;
+    }
 } // namespace Utils

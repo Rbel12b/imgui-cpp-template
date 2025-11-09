@@ -43,7 +43,7 @@ else()
   add_executable(${APP_EXECUTABLE} ${SOURCES})
 endif()
 
-target_include_directories(${APP_EXECUTABLE} PRIVATE src ${CMAKE_SOURCE_DIR}/thirdparty/lib/include ${CMAKE_BINARY_DIR})
+target_include_directories(${APP_EXECUTABLE} PUBLIC src ${CMAKE_SOURCE_DIR}/thirdparty/lib/include ${CMAKE_BINARY_DIR} thirdparty/lib/imgui_additions)
 
 add_custom_command(
   OUTPUT ${VERSION_FILE_OUT}
@@ -70,8 +70,6 @@ add_subdirectory(thirdparty/lib/cpplib)
 find_package(SDL2 CONFIG REQUIRED)
 
 target_link_libraries(${APP_EXECUTABLE} imgui_core imgui_impl_sdl2 imgui_impl_sdlrenderer2 SDL2::SDL2 Rbel12b-cpplib::ProcessUtils)
-
-target_include_directories(${APP_EXECUTABLE} thirdparty/lib/imgui_additions)
 
 # --- Custom commands: generate icons ---
 
