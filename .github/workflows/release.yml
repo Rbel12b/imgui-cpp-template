@@ -22,7 +22,7 @@ jobs:
         run: |
           if [ "${PROJECT_NAME}" = "{{PROJECT_NAME}}" ]; then
             echo "Project name is still default — initializing..."
-            echo "name" | python3 ./init-name.py
+            echo "name" | python3 ./init_name.py
             echo "PROJECT_NAME=name" >> $GITHUB_ENV
           else
             echo "Project name already set to: ${PROJECT_NAME}"
@@ -35,7 +35,7 @@ jobs:
             cmake ninja-build build-essential pkg-config \
             libsdl2-dev libsdl2-2.0-0 \
             libcurl4-openssl-dev curl \
-            imagemagick mingw-w64 zip file
+            imagemagick zip file
 
       - name: Verify tools
         run: |
@@ -63,11 +63,6 @@ jobs:
         run: |
           chmod +x ./build-appimage.sh
           ./build-appimage.sh
-
-      - name: Build Windows installer (MinGW)
-        run: |
-          chmod +x ./build-win-installer.sh
-          ./build-win-installer.sh
 
       - name: Rename release artifacts
         run: |
