@@ -22,8 +22,8 @@ jobs:
         run: |
           if [ "${PROJECT_NAME}" = "{{PROJECT_NAME}}" ]; then
             echo "Project name is still default — initializing..."
-            echo "name" | python3 ./init_name.py
-            echo "PROJECT_NAME=name" >> $GITHUB_ENV
+            echo "imgui-cpp-template" | python3 ./init_name.py
+            echo "PROJECT_NAME=imgui-cpp-template" >> $GITHUB_ENV
           else
             echo "Project name already set to: ${PROJECT_NAME}"
           fi
@@ -110,5 +110,6 @@ jobs:
           files: |
             release/${{ env.PROJECT_NAME }}.version
             release/${{ env.PROJECT_NAME }}.AppImage
+            release/${{ env.PROJECT_NAME }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
