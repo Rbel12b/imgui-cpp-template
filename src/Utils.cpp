@@ -24,10 +24,10 @@
 #include <fcntl.h>
 #endif
 
+const std::string AppState::appName = "{{PROJECT_NAME}}";
+
 namespace Utils
 {
-    static const std::string appName = "{{PROJECT_NAME}}";
-
 // Windows helper
 #ifdef _WIN32
     std::string getKnownFolder(REFKNOWNFOLDERID folderId)
@@ -124,7 +124,7 @@ namespace Utils
         if (SUCCEEDED(SHGetFolderPathA(nullptr, CSIDL_LOCAL_APPDATA, nullptr, 0, path)))
         {
             dataDir = path;
-            dataDir /= appName;
+            dataDir /= AppState::appName;
         }
 #else
         const char *home = getenv("HOME");
@@ -138,7 +138,7 @@ namespace Utils
         {
             dataDir = home;
             dataDir /= ".config";
-            dataDir /= appName;
+            dataDir /= AppState::appName;
         }
 #endif
 
@@ -160,14 +160,14 @@ namespace Utils
         if (len > 0 && len < MAX_PATH)
         {
             tempDir = path;
-            tempDir /= appName;
+            tempDir /= AppState::appName;
         }
 #else
         const char *tmp = getenv("TMPDIR");
         if (!tmp || *tmp == '\0')
             tmp = "/tmp";
         tempDir = tmp;
-        tempDir /= appName;
+        tempDir /= AppState::appName;
 #endif
 
         if (!tempDir.empty() && !std::filesystem::exists(tempDir))
